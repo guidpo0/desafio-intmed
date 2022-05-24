@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from medicar import models as medicar_models
-from psycopg2.extras import DateTimeTZRange
 
 
 class MedicoSerializer(serializers.ModelSerializer):
