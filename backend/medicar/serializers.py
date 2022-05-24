@@ -1,26 +1,21 @@
 from rest_framework import serializers
-from medicar.models import Medico, Horario, Agenda, Consulta
+from medicar import models as medicar_models
+from psycopg2.extras import DateTimeTZRange
 
 
 class MedicoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Medico
-        fields = '__all__'
-
-
-class HorarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Horario
+        model = medicar_models.Medico
         fields = '__all__'
 
 
 class AgendaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Agenda
+        model = medicar_models.Agenda
         fields = '__all__'
 
 
 class ConsultaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Consulta
+        model = medicar_models.Consulta
         fields = '__all__'

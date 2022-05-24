@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 
 class Medico(models.Model):
@@ -10,17 +11,10 @@ class Medico(models.Model):
         return self.nome
 
 
-class Horario(models.Model):
-    horario = models.TimeField()
-
-    def __str__(self):
-        return self.horario
-
-
 class Agenda(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
     dia = models.DateField()
-    horarios = models.ManyToManyField('Horario')
+    horarios = ArrayField(models.TimeField(), default=list)
 
     def __str__(self):
         return self.medico.nome
@@ -28,7 +22,7 @@ class Agenda(models.Model):
 
 class Consulta(models.Model):
     dia = models.DateField()
-    horario = models.ForeignKey(Horario, on_delete=models.CASCADE)
+    horario = models.TimeField()
     data_agendamento = models.DateTimeField(auto_now_add=True)
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
 

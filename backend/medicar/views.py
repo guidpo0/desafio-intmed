@@ -8,11 +8,6 @@ class MedicoViewSet(viewsets.ModelViewSet):
     serializer_class = medicar_serializers.MedicoSerializer
 
 
-class HorarioViewSet(viewsets.ModelViewSet):
-    queryset = medicar_models.Horario.objects.all()
-    serializer_class = medicar_serializers.HorarioSerializer
-
-
 class AgendaViewSet(viewsets.ModelViewSet):
     queryset = medicar_models.Agenda.objects.all()
     serializer_class = medicar_serializers.AgendaSerializer
