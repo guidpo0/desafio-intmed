@@ -3,18 +3,18 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class Medico(models.Model):
-    nome = models.CharField(max_length=255)
-    crm = models.IntegerField(unique=True)
-    email = models.EmailField(max_length=255)
+    nome = models.CharField(max_length=255, required=True)
+    crm = models.IntegerField(unique=True, required=True)
+    email = models.EmailField(max_length=255, default='')
 
     def __str__(self):
         return self.nome
 
 
 class Agenda(models.Model):
-    medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
-    dia = models.DateField()
-    horarios = ArrayField(models.TimeField(), default=list)
+    medico = models.ForeignKey(Medico, on_delete=models.CASCADE, required=True)
+    dia = models.DateField(required=True)
+    horarios = ArrayField(models.TimeField(), required=True)
 
     def __str__(self):
         return self.medico.nome
