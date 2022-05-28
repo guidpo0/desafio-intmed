@@ -1,14 +1,25 @@
 # Especificações técnicas de backend do Medicar
 
+## Passo a passo para rodar o projeto localmente
+
+1. Faça o clone do projeto;
+2. Criar ambiente virtual do python com o comando: `python3 -m venv venv`;
+3. Entre no diretório do projeto e rode o comando: `source venv/bin/activate`;
+4. Instale as dependências do projeto com o comando: `pip install -r requirements.txt`;
+5. Crie um banco de dados utilizando PostgreSQL;
+6. Crie um arquivo `.env` com as variáveis de ambiente referentes ao banco de dados para o projeto, seguindo o padrão de .env.example;
+7. Criar um superusuário para o admin com o comando: `python manage.py createsuperuser`;
+8. Rodar o projeto com o comando: `python3 manage.py runserver`;
+9. A documentação da API também pode ser acessada por '/doc'.
+
+
 ## Interface administrativa
 
-Você deverá implementar uma interface administrativa na qual gestor da clínica (superusuário) poderá cadastrar um médico e criar a agenda do médico. Utilize a ferramenta de geração de interface administrativa automática do Django para criar esta interface (veja a [documentação](https://docs.djangoproject.com/en/4.0/ref/contrib/admin/)).
-
-A interface administrativa deve conter a funcionalidade a seguir:
+A interface administrativa (/admin) contém a funcionalidade a seguir:
 
 ### Cadastrar médico
 
-Deve ser possível cadastrar os médicos que podem atender na clínica fornecendo as seguintes informações:
+É possível cadastrar os médicos que podem atender na clínica fornecendo as seguintes informações:
 
 - **Nome:** Nome do médico (obrigatório)
 - **CRM:** Número do médico no conselho regional de medicina (obrigatório)
@@ -16,11 +27,11 @@ Deve ser possível cadastrar os médicos que podem atender na clínica fornecend
 
 #### Restrições:
 
-- Não deve ser possível cadastrar médico com um CRM que outro médico já utilize
+- Não é possível cadastrar médico com um CRM que outro médico já utilize
 
 ### Criar agenda para médico
 
-Deve ser possível criar uma agenda para o médico em um dia específico fornecendo as seguintes informações:
+É possível criar uma agenda para o médico em um dia específico fornecendo as seguintes informações:
 
 - **Médico:** Médico que será alocado (obrigatório)
 - **Dia:** Data de alocação do médico (obrigatório)
@@ -28,16 +39,14 @@ Deve ser possível criar uma agenda para o médico em um dia específico fornece
 
 #### Restrições:
 
-- Não deve ser possível criar mais de uma agenda para um médico em um mesmo dia
-- Não deve ser possível criar uma agenda para um médico em um dia passado
+- Não é possível criar mais de uma agenda para um médico em um mesmo dia
+- Não é possível criar uma agenda para um médico em um dia passado
 
-## :gear:API
-
-Você deverá construir uma API, seguindo os padrões e boas práticas do REST contendo os seguintes endpoints:
+## API
 
 ### Autenticação
 
-Todos os endpoints da API devem ser abertos e não possuem autenticação 
+Todos os endpoints da API são abertos e não possuem autenticação 
 
 ### Listar consultas marcadas
 
@@ -82,8 +91,8 @@ GET /consultas/
 
 #### Regras de negócio
 
-- A listagem não deve exibir consultas para dia e horário passados
-- Os itens da listagem devem vir ordenados por ordem crescente do dia e horário da consulta
+- A listagem não exibe consultas para dia e horário passados
+- Os itens da listagem são ordenados por ordem crescente do dia e horário da consulta
 
 ### Listar agendas disponíveis
 
@@ -132,9 +141,9 @@ GET /agendas/?crm=2544&crm=3711&data_inicio=2022-01-01&data_final=2022-01-05
 
 #### Regras de negócio
 
-- As agendas devem vir ordenadas por ordem crescente de data
-- Agendas para datas passadas ou que todos os seus horários já foram preenchidos devem ser excluídas da listagem
-- Horários dentro de uma agenda que já passaram ou que foram preenchidos devem ser excluídos da listagem
+- As agendas são ordenadas por ordem crescente de data
+- Agendas para datas passadas ou que todos os seus horários já foram preenchidos são excluídas da listagem
+- Horários dentro de uma agenda que já passaram ou que foram preenchidos são excluídos da listagem
 
 ### Marcar consulta
 
@@ -169,9 +178,9 @@ POST /consultas/
 
 #### Regras de negócio
 
-- A data em que o agendamento foi feito deve ser salva ao se marcar uma consulta
-- Não deve ser possível marcar uma consulta para um dia e horário passados
-- Não deve ser possível marcar uma consulta se o dia e horário já foram preenchidos
+- A data em que o agendamento foi feito é salva ao se marcar uma consulta
+- Não é possível marcar uma consulta para um dia e horário passados
+- Não é possível marcar uma consulta se o dia e horário já foram preenchidos
 
 ### Desmarcar consulta
 
@@ -189,19 +198,5 @@ Não há retorno (vazio)
 
 #### Regras de negócio
 
-- Não deve ser possível desmarcar uma consulta que nunca foi marcada (identificador inexistente)
-- Não deve ser possível desmarcar uma consulta que já aconteceu
-
-### :clock1: Extras
-
-Estes itens não são obrigatório para a entrega do desafio, mas seria interessante se você conseguisse fazer dentro do prazo estipulado com o seu recrutador
-
-##### Integração com Trello
-Ao criar uma nova consulta, deverá ser criado um card no trello com as informações da consulta.
-
-##### Outros itens extras
-
-- Possuir testes unitários
-- Utilizar Postgres ao invés do sqlite
-- Utilizar Docker
-- Deploy na nuvem
+- Não é possível desmarcar uma consulta que nunca foi marcada (identificador inexistente)
+- Não é possível desmarcar uma consulta que já aconteceu
