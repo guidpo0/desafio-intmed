@@ -9,6 +9,8 @@ class MedicoSerializer(serializers.ModelSerializer):
 
 
 class AgendaSerializer(serializers.ModelSerializer):
+    medico = MedicoSerializer(read_only=True)
+
     class Meta:
         model = medicar_models.Agenda
         fields = '__all__'

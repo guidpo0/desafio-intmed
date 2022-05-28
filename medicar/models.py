@@ -32,11 +32,19 @@ class Agenda(models.Model):
         ).exists()
 
         if existe_dia_na_agenda_do_medico:
-            raise ValidationError('Esse dia já foi cadastrado para esse médico')
+            raise ValidationError(
+              'Esse dia já foi cadastrado para esse médico'
+            )
 
         if self.dia < now.date():
             raise ValidationError(
                 'Não é possível cadastrar uma data anterior'
+            )
+
+        horarios_nao_repetidos = set(self.horarios)
+        if len(horarios_nao_repetidos) != len(self.horarios):
+            raise ValidationError(
+                'Horário repetido'
             )
 
     def save(self, *args, **kwargs):

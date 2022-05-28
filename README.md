@@ -1,66 +1,207 @@
-<h1 align="center">
-  <img alt="Fastfeet" title="Medicar" src="assets/logo.png" width="300px" />
-</h1>
+# Especificações técnicas de backend do Medicar
 
-<h3 align="center">
-  Desafio: Medicar
-</h3>
+## Interface administrativa
 
-<p align="center">Sistema para gestão de consultas em uma clínica médica</p>
+Você deverá implementar uma interface administrativa na qual gestor da clínica (superusuário) poderá cadastrar um médico e criar a agenda do médico. Utilize a ferramenta de geração de interface administrativa automática do Django para criar esta interface (veja a [documentação](https://docs.djangoproject.com/en/4.0/ref/contrib/admin/)).
 
-<p align="center">
-  <a href="#sobre-o-desafio">Sobre o desafio</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#histórias-de-usuário">Histórias de usuário</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#pencil-critérios-de-avaliação">Critérios de avaliação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#gear-backend">Backend</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#art-frontend">Frontend</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#date-entrega">Entrega</a>&nbsp;&nbsp;&nbsp;
-</p>
+A interface administrativa deve conter a funcionalidade a seguir:
 
-## Sobre o desafio
+### Cadastrar médico
 
-Durante este desafio você construirá um sistema para controlar a agenda dos médicos da clínica Medicar com o intuito de auxiliar clientes na marcação de consultas e gerenciar as agendas dos médico.
+Deve ser possível cadastrar os médicos que podem atender na clínica fornecendo as seguintes informações:
 
-## Histórias de usuário
+- **Nome:** Nome do médico (obrigatório)
+- **CRM:** Número do médico no conselho regional de medicina (obrigatório)
+- **E-mail:** Endereço de e-mail do médico (opcional)
 
-- O usuário pode marcar uma consulta
-  - Não deve ser possível marcar consultas para um dia e horário não disponível
-  - Não deve ser possível marcar consultas para dia e horário passados
-- O usuário pode desmarcar uma consulta
-  - Não deve ser possível desmarcar uma consulta que já aconteceu
-- O usuário pode visualizar as todas as consultas marcadas que ainda não aconteceram
-- O gestor da clínica pode cadastrar um médico
-- O gestor da clínica pode criar a agenda do médico para cada dia
+#### Restrições:
 
-## :pencil: Critérios de avaliação
+- Não deve ser possível cadastrar médico com um CRM que outro médico já utilize
 
-Serão avaliados os seguintes pontos no desafio final:
+### Criar agenda para médico
 
-1. **Cumprimento dos requisitos:** A aplicação não possui escopo aberto e as funcionalidades implementadas devem atender os objetivos especificados. Neste critério vamos avaliar se a sua aplicação atende todos os requisitos de forma funcional
-1. **Conhecimento e uso dos recursos da linguagem/framework:** Não recrie a roda! Utilize as ferramentas disponíveis na linguagem e framework utilizados a seu favor e consulte a documentação sempre que necessário. Nesse critério iremos avaliar o seu conhecimento na linguagem e framework utilizados e o empenho em entender e utilizar seus recursos
-1. **Organização do projeto e padronização de código:** O seu projeto está organizado? É fácil se guiar na estrutura de pastas do código-fonte? Ela faz sentido diante do seu propósito? O seu código segue um padrão de escrita (próprio ou conveniconado pela comunidade)? Nesse critério iremos avaliar o nível de organização e padronização de escrita do seu código visando a legibilidade e entendimento
-1. **Estilização e usabilidade:** Iremos avaliar se a sua aplicação segue o layout proposto e a facilidade em usá-lo
+Deve ser possível criar uma agenda para o médico em um dia específico fornecendo as seguintes informações:
 
-## :gear: Backend
+- **Médico:** Médico que será alocado (obrigatório)
+- **Dia:** Data de alocação do médico (obrigatório)
+- **Horários:** Lista de horários na qual o médico deverá ser alocado para o dia especificado (obrigatório)
 
-Todas as implementações de backend devem atender as especificações descritas na seguinte [seção](backend/README.md)
+#### Restrições:
 
-## :art: Frontend
+- Não deve ser possível criar mais de uma agenda para um médico em um mesmo dia
+- Não deve ser possível criar uma agenda para um médico em um dia passado
 
-Todas as implementações de frontend devem atender as especificações descritas na seguinte [seção](frontend/README.md)
+## :gear:API
 
-## :date: Entrega
+Você deverá construir uma API, seguindo os padrões e boas práticas do REST contendo os seguintes endpoints:
 
-Adicione todo o código da sua aplicação em um repositório **Github** contendo os códigos de cada parte do sistema implementada dentro de duas pastas: **backend** e/ou **frontend** (Para o caso de optar pelo **full stack**). Dentro de um arquivo **README** adicione todas as instruções necessárias para que um de nossos instrutores consiga executar a aplicação.
+### Autenticação
 
-Com tudo pronto, envie um email para **talentos@intmed.com.br** com o título sendo o nome da vaga desejada, no qual se encontra na sessão de [issues](https://github.com/Intmed-Software/vagas/issues) deste repositório, contendo o link para o repositório Github do projeto.
+Todos os endpoints da API devem ser abertos e não possuem autenticação 
 
-Você tem até o prazo acordado com o recrutador para entregar o seu projeto. Entregas após o prazo devem ser justificadas anteriormente, caso contrário não serão avaliadas.
+### Listar consultas marcadas
 
-## :mega: Links úteis
+Lista todas as consultas marcadas
 
-- [Como usar o Figma](https://www.diolinux.com.br/2019/12/figma-ferramenta-design-prototipacao-navegador.html)
-- [The Django admin site](https://docs.djangoproject.com/en/4.0/ref/contrib/admin/)
-- [Django REST framework](https://www.django-rest-framework.org/)
-- [Coding style - Django](https://docs.djangoproject.com/en/dev/internals/contributing/writing-code/coding-style/)
-- [Style guide - Angular](https://angular.io/guide/styleguide)
+#### Requisição
+
+```
+GET /consultas/
+```
+
+#### Retorno
+
+```json
+[
+  {
+    "id": 1,
+    "dia": "2022-02-05",
+    "horario": "12:00",
+    "data_agendamento": "2022-02-01T10:45:0-03:00",
+    "medico": {
+      "id": 1,
+      "crm": 3711,
+      "nome": "Drauzio Varella",
+      "email": "drauzinho@globo.com"
+    }
+  },
+  {
+    "id": 2,
+    "dia": "2022-03-01",
+    "horario": "09:00",
+    "data_agendamento": "2022-02-01T10:45:0-03:00",
+    "medico": {
+      "id": 2,
+      "crm": 2544,
+      "nome": "Gregory House",
+      "email": "greg@hbo.com.br"
+    }
+  }
+]
+```
+
+#### Regras de negócio
+
+- A listagem não deve exibir consultas para dia e horário passados
+- Os itens da listagem devem vir ordenados por ordem crescente do dia e horário da consulta
+
+### Listar agendas disponíveis
+
+Lista todas as agendas disponíveis na clínica
+
+```json
+[
+  {
+    "id": 1,
+    "medico": {
+      "id": 1,
+      "crm": 3711,
+      "nome": "Drauzio Varella",
+      "email": "drauzinho@globo.com"
+    },
+    "dia": "2020-02-10",
+    "horarios": ["14:00", "14:15", "16:00"]
+  },
+  {
+    "id": 2,
+    "medico": {
+      "id": 2,
+      "crm": 2544,
+      "nome": "Gregory House",
+      "email": "greg@hbo.com.br"
+    },
+    "dia": "2020-02-10",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "14:00"]
+  }
+]
+```
+
+#### Filtros
+
+- Identificador de um ou mais médicos
+- Identificador de uma ou mais CRM
+- Intervalo de data
+
+```
+# Retorna as agendas dos médicos 1 e 2 no período de 1 a 5 de janeiro
+GET /agendas/?medico=1&medico=2&data_inicio=2022-01-01&data_final=2022-01-05
+
+# Retorna as agendas dos médicos de CRM passados no filtro no período de 1 a 5 de janeiro
+GET /agendas/?crm=2544&crm=3711&data_inicio=2022-01-01&data_final=2022-01-05
+```
+
+#### Regras de negócio
+
+- As agendas devem vir ordenadas por ordem crescente de data
+- Agendas para datas passadas ou que todos os seus horários já foram preenchidos devem ser excluídas da listagem
+- Horários dentro de uma agenda que já passaram ou que foram preenchidos devem ser excluídos da listagem
+
+### Marcar consulta
+
+Marca uma consulta
+
+#### Requisição
+
+```
+POST /consultas/
+{
+  "agenda_id": 1,
+  "horario": "14:15"
+}
+```
+
+#### Retorno
+
+```json
+{
+  "id": 2,
+  "dia": "2022-03-01",
+  "horario": "09:00",
+  "data_agendamento": "2022-02-01T10:45:0-03:00",
+  "medico": {
+    "id": 1,
+    "crm": 3711,
+    "nome": "Drauzio Varella",
+    "email": "drauzinho@globo.com"
+  }
+}
+```
+
+#### Regras de negócio
+
+- A data em que o agendamento foi feito deve ser salva ao se marcar uma consulta
+- Não deve ser possível marcar uma consulta para um dia e horário passados
+- Não deve ser possível marcar uma consulta se o dia e horário já foram preenchidos
+
+### Desmarcar consulta
+
+Desmarca uma consulta
+
+#### Requisição
+
+```
+DELETE /consultas/<consulta_id>
+```
+
+#### Retorno
+
+Não há retorno (vazio)
+
+#### Regras de negócio
+
+- Não deve ser possível desmarcar uma consulta que nunca foi marcada (identificador inexistente)
+- Não deve ser possível desmarcar uma consulta que já aconteceu
+
+### :clock1: Extras
+
+Estes itens não são obrigatório para a entrega do desafio, mas seria interessante se você conseguisse fazer dentro do prazo estipulado com o seu recrutador
+
+##### Integração com Trello
+Ao criar uma nova consulta, deverá ser criado um card no trello com as informações da consulta.
+
+##### Outros itens extras
+
+- Possuir testes unitários
+- Utilizar Postgres ao invés do sqlite
+- Utilizar Docker
+- Deploy na nuvem
