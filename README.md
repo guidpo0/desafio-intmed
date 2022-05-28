@@ -9,8 +9,9 @@
 5. Crie um banco de dados utilizando PostgreSQL;
 6. Crie um arquivo `.env` com as variáveis de ambiente referentes ao banco de dados para o projeto, seguindo o padrão de .env.example;
 7. Criar um superusuário para o admin com o comando: `python manage.py createsuperuser`;
-8. Rodar o projeto com o comando: `python3 manage.py runserver`;
-9. A documentação da API também pode ser acessada por '/doc'.
+8. Popular o banco de dados com o comando: `python manage.py migrate`;
+9. Rodar o projeto com o comando: `python3 manage.py runserver`;
+10. A documentação da API também pode ser acessada por '/doc'.
 
 
 ## Interface administrativa
